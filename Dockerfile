@@ -1,29 +1,32 @@
-FROM python:3.12-slim
+FROM python:3.10-slim
 
+# Set up base directory
 WORKDIR /app
 
-# Copy only necessary requirements first
+# Install requirements
 COPY requirements.txt .
-
-# Install only the required packages
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip list | grep langchain
 
-# Copy only the necessary files and directories
+# Copy project files
 COPY src/ ./src/
-COPY templates/ ./templates/
+COPY templates/ ./src/templates/ 
 COPY Data/ ./Data/
 
-# Set Python path to include src directory
-ENV PYTHONPATH="/app/src:${PYTHONPATH}"
+# Set Python path to include both /app and /app/src
+ENV PYTHONPATH="/app:/app/src:${PYTHONPATH}"
 
-# Expose the port
 EXPOSE 5002
 
-# Set environment variables
+# Stay in /app directory
 ENV FLASK_APP=src/RAG.py
 ENV FLASK_RUN_HOST=0.0.0.0
 
-# Change working directory to where RAG.py is
-WORKDIR /app/src
+# Keep working directory as /app
+WORKDIR /app
 
-CMD ["python", "./RAG.py"]
+# Debug: Print current working directory and Python path
+RUN pwd && echo $PYTHONPATH
+
+# Run using full path
+CMD ["python", "src/RAG.py"]

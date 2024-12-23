@@ -62,13 +62,14 @@ Use the following pieces of context to answer the question:
 Question: {question}
 
 Provide your response in this order:
-1. Battle Overview (if requested)
-2. Strategic Analysis
-3. Discussion Points or Questions
+Battle Overview (if requested)
+Strategic Analysis
+Discussion Points
 
 Separate these sections with two new lines, but do not use any other demarcations. 
+Make SURE to separate these sections with two new lines, but do not use any other demarcations. 
 Do NOT say "1: Battle Overview" or "2: Strategic Analysis" or "3: Discussion Points or Questions" 
-or other similar demarcations, such as "Battle Overview:" or "Strategic Analysis:" or "Discussion Points or Questions:" or anything similar.
+Do NOT use anyother similar demarcations, such as "Battle Overview:" or "Strategic Analysis:" or "Discussion Points or Questions:" or anything similar.
 """
     
     qa_chain = RetrievalQA.from_chain_type(

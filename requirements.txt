@@ -1,9 +1,9 @@
 langchain
 langchain-core
+langchain-community
+langchain-openai
+langchain-text-splitters
 chromadb
 flask
 python-dotenv
-sentence-transformers
-torch
-transformers
-langchain-community
+pypdf

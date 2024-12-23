@@ -15,8 +15,15 @@ spec:
       containers:
       - name: gaugamela
         image: 192.168.86.39:30500/gaugamela:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 5002
+        env:
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: openai-secret
+              key: OPENAI_API_KEY
         resources:
           requests:
             cpu: "250m"

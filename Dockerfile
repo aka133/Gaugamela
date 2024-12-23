@@ -10,9 +10,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy only the necessary files and directories
 COPY src/ ./src/
-COPY templates/ ./templates
-COPY Data/decisive_battles.pdf ./Data/
-COPY Data/vectorstore/ ./Data/vectorstore/
+COPY templates/ ./templates/
+COPY Data/ ./Data/
 
 # Set Python path to include src directory
 ENV PYTHONPATH="/app/src:${PYTHONPATH}"
@@ -27,4 +26,4 @@ ENV FLASK_RUN_HOST=0.0.0.0
 # Change working directory to where RAG.py is
 WORKDIR /app/src
 
-CMD ["python", "RAG.py"]
+CMD ["python", "./RAG.py"]

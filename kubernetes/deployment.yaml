@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: gaugamela
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: gaugamela
+  template:
+    metadata:
+      labels:
+        app: gaugamela
+    spec:
+      containers:
+      - name: gaugamela
+        image: 192.168.86.39:30500/gaugamela:latest
+        ports:
+        - containerPort: 5002
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"

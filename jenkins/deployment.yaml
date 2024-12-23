@@ -21,7 +21,12 @@ spec:
         volumeMounts:
         - name: jenkins-data
           mountPath: /var/jenkins_home
+        - name: containerd-socket
+          mountPath: /run/containerd/containerd.sock
       volumes:
       - name: jenkins-data
         persistentVolumeClaim:
           claimName: jenkins-pvc
+      - name: containerd-socket
+        hostPath:
+          path: /run/k3s/containerd/containerd.sock

@@ -2,30 +2,26 @@ pipeline {
     agent any
     
     environment {
-        DOCKER_REGISTRY = '192.168.86.39:30500'
+        REGISTRY = '192.168.86.39:30500'
         IMAGE_NAME = 'gaugamela'
-
     }
-
+    
     stages {
-        stage('Build') {
+        stage('Build and Push') {
             steps {
-                sh 'docker build -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:latest'
+                sh '''
+                    # Use k3s crictl commands instead of docker
+                    k3s crictl build -t ${REGISTRY}/${IMAGE_NAME}:latest .
+                    k3s crictl push ${REGISTRY}/${IMAGE_NAME}:latest
+                '''
             }
         }
-
-        stage('Push') {
-            steps {
-                sh 'docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}:latest'
-            }
-        }
-
+        
         stage('Deploy') {
             steps {
-                sh 'kubectl apply -f kubernetes/deployment.yaml'
-                sh 'kubectl rollout restart deployment gaugamela'
+                sh 'k3s kubectl apply -f kubernetes/deployment.yaml'
+                sh 'k3s kubectl rollout restart deployment gaugamela'
             }
         }
     }
-
 }

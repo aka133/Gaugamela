@@ -13,18 +13,34 @@ spec:
       labels:
         app: jenkins
     spec:
-      serviceAccountName: jenkins 
+      serviceAccountName: jenkins
       securityContext:
         runAsUser: 0
         fsGroup: 0
       containers:
       - name: jenkins
         image: jenkins/jenkins:lts
-        securityContext:
-          runAsUser: 0
-          allowPrivilegeEscalation: true
+        command:
+        - "/bin/sh"
+        - "-c"
+        - |
+          apt-get update && \
+          apt-get install -y docker.io tini curl apt-transport-https ca-certificates git && \
+          curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg && \
+          echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | tee /etc/apt/sources.list.d/kubernetes.list && \
+          apt-get update && \
+          apt-get install -y kubectl && \
+          mkdir -p /var/jenkins_home/workspace && \
+          chown -R jenkins:jenkins /var/jenkins_home/workspace && \
+          git config --global --add safe.directory "*" && \
+          /usr/bin/tini -- /usr/local/bin/jenkins.sh
         ports:
         - containerPort: 8080
+          name: http
+          protocol: TCP
+        - containerPort: 50000
+          name: jnlp
+          protocol: TCP
         volumeMounts:
         - name: jenkins-data
           mountPath: /var/jenkins_home

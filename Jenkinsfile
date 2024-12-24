@@ -10,17 +10,19 @@ pipeline {
         stage('Build and Push') {
             steps {
                 sh '''
-                    # Use k3s crictl commands instead of docker
-                    k3s crictl build -t ${REGISTRY}/${IMAGE_NAME}:latest .
-                    k3s crictl push ${REGISTRY}/${IMAGE_NAME}:latest
+                    # Build using docker
+                    docker build -t ${REGISTRY}/${IMAGE_NAME}:latest .
+                    docker push ${REGISTRY}/${IMAGE_NAME}:latest
                 '''
             }
         }
         
         stage('Deploy') {
             steps {
-                sh 'k3s kubectl apply -f kubernetes/deployment.yaml'
-                sh 'k3s kubectl rollout restart deployment gaugamela'
+                sh '''
+                    kubectl apply -f kubernetes/deployment.yaml
+                    kubectl rollout restart deployment gaugamela
+                '''
             }
         }
     }

@@ -13,20 +13,27 @@ spec:
       labels:
         app: jenkins
     spec:
+      serviceAccountName: jenkins 
+      securityContext:
+        runAsUser: 0
+        fsGroup: 0
       containers:
       - name: jenkins
         image: jenkins/jenkins:lts
+        securityContext:
+          runAsUser: 0
+          allowPrivilegeEscalation: true
         ports:
         - containerPort: 8080
         volumeMounts:
         - name: jenkins-data
           mountPath: /var/jenkins_home
-        - name: containerd-socket
-          mountPath: /run/containerd/containerd.sock
+        - name: docker-socket
+          mountPath: /var/run/docker.sock
       volumes:
       - name: jenkins-data
         persistentVolumeClaim:
           claimName: jenkins-pvc
-      - name: containerd-socket
+      - name: docker-socket
         hostPath:
-          path: /run/k3s/containerd/containerd.sock
+          path: /var/run/docker.sock

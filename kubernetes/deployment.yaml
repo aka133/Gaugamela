@@ -1,9 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
-metadata: 
+metadata:
   name: gaugamela
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: "/metrics"
+    prometheus.io/port: "5002"
 spec:
-  replicas: 2
+  replicas: 2x
   selector:
     matchLabels:
       app: gaugamela

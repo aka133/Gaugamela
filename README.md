@@ -1,6 +1,27 @@
 # Gaugamela
 
-The purpose of this project is to build a multifaceted self-improvement app, without the BS. The app is a collection of fine-tuned open-source LLMs with RAGS, focused on
+The purpose of this project is to build a multifaceted self-improvement app, without the BS. 
+
+It's currently RAG-based application focused on military strategy and historical battles, powered by "The Decisive Battles of World History" by Professor Gregory S. Aldrete. Built on a Kubernetes infrastructure running on Orange Pi 3B boards.
+
+## Core Features
+- Historical battle analysis and strategy learning
+- RAG-based interactions using battle history
+- Interactive scenarios based on famous battles
+- Source material: "The Decisive Battles of World History"
+
+## Technical Implementation
+
+### Infrastructure
+- K3s cluster on Orange Pi 3B boards
+- Jenkins CI/CD pipeline (port 30080)
+- Prometheus/Grafana monitoring (port 30300)
+- Container registry (port 30500)
+- Terraform infrastructure as code (IaC) for AWS EKS cluster
+
+## Future Goals
+
+The app aims to be a collection of fine-tuned open-source LLMs, focused on
 - Vocabulary
 - Storytelling ability
 - Writing and exposition
